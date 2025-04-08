@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+spawn telnet localhost 6002
+expect "login:" { send "admin\r" }
+expect "Password:" { send "admin\r" }
+expect "#" { send "config\r" }
+send "system\r"
+send " host-name vbond\r"
+send " system-ip 1.1.1.3\r"
+send " site-id 100\r"
+send " organization-name SD-WAN-DOANH\r"
+send " vbond 10.10.1.3 local vbond-only\r"
+send " exit\r"
+send "vpn 0\r"
+send " interface ge0/0\r"
+send "  ip address 10.10.1.3/24\r"
+send "  tunnel-interface\r"
+send "  no shutdown\r"
+send " exit\r"
+send " ip route 0.0.0.0/0 10.10.1.254\r"
+send " exit\r"
+send "vpn 512\r"
+send " interface eth0\r"
+send "  ip address 172.16.1.3/24\r"
+send "  no shutdown\r"
+send " exit\r"
+send " exit\r"
+send " commit\r"
+send " exit\r"
+send "exit\r"
